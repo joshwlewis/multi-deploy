@@ -26,6 +26,8 @@ apps=( app1 app2 app3 )
 work_dir=~/dev/rails/apps/
 
 
+this_dir=$( cd "$( dirname "$0" )" && pwd )
+
 #these variales controlled by flags
 environment=
 branch=
@@ -82,7 +84,7 @@ echo -n "Environment: $environment"
 echo -n "IM User: $im_user"
 echo -n "IM: $im"
 if $im ; then
-  python ~/.md/im.py $im_user "<p style='color: green'><b>--> Beginning multi-deploy to $environment</b></p>"
+  python $this_dir/im.py $im_user "<p style='color: green'><b>--> Beginning multi-deploy to $environment</b></p>"
 fi
 
 for app in ${apps[@]}
@@ -94,11 +96,11 @@ do
   git pull
   cap -s branch=$branch $environment deploy$migrations
   if $im ; then
-    python ~/.md/im.py $im_user "<p style='color: purple'><b>--> $app deployed to $environment</b></p>"
+    python $this_dir/im.py $im_user "<p style='color: purple'><b>--> $app deployed to $environment</b></p>"
   fi
   echo -ne "\e[00;32m{[$app deployed to $environment]}\n\e[00m"
   cd $work_dir
 done
 if $im ; then
-  python ~/.md/im.py $im_user "<p style='color: green'><b>--> Completed multi-deploy to $environment</b></p>"
+  python $this_dir/im.py $im_user "<p style='color: green'><b>--> Completed multi-deploy to $environment</b></p>"
 fi
