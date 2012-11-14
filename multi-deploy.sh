@@ -1,6 +1,6 @@
 #! /bin/bash
 
-# deploys multiple sites to desired environment
+# deploys multiple apps to desired environment
 
 usage()
 {
@@ -19,10 +19,10 @@ OPTIONS:
 EOF
 }
 
-# This is the list of sites to deploy, edit as needed
-sites=( app1 app2 app3 )
+# This is the list of apps to deploy, edit as needed
+apps=( app1 app2 app3 )
 
-# This is where your local repositories are stored, change as needed
+# This is where your local app repositories are stored, change as needed
 work_dir=~/dev/rails/apps/
 
 
@@ -32,7 +32,6 @@ branch=
 migrations=
 im_user=
 im=false
-sleep_time=90
 
 while getopts "he:b:mi:" OPTION
 do
@@ -86,21 +85,19 @@ if $im ; then
   python ~/.md/im.py $im_user "<p style='color: green'><b>--> Beginning multi-deploy to $environment</b></p>"
 fi
 
-for site in ${sites[@]}
+for app in ${apps[@]}
 do
-  cd $site
-  echo -ne "\e[00;36m{[deploying $site to $environment]}\n\e[00m"
+  cd $app
+  echo -ne "\e[00;36m{[deploying $app to $environment]}\n\e[00m"
   git reset --hard
   git co $branch
   git pull
   cap -s branch=$branch $environment deploy$migrations
   if $im ; then
-    python ~/.md/im.py $im_user "<p style='color: purple'><b>--> $site deployed to $environment</b></p>"
+    python ~/.md/im.py $im_user "<p style='color: purple'><b>--> $app deployed to $environment</b></p>"
   fi
-  echo -ne "\e[00;32m{[$site deployed to $environment]}\n\e[00m"
+  echo -ne "\e[00;32m{[$app deployed to $environment]}\n\e[00m"
   cd $work_dir
-  echo -ne "Sleeping between sites....."
-  sleep $sleep_time
 done
 if $im ; then
   python ~/.md/im.py $im_user "<p style='color: green'><b>--> Completed multi-deploy to $environment</b></p>"
