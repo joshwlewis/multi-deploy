@@ -2,13 +2,13 @@
 
 Crude script for deploying multiple capistrano deployable projects
 
----------
-
 ### Usage
 
-> ./multideploy.sh [-e [environment]][-b [branch]][-m][-i [im-user]]
+```
+./multideploy.sh [-e [environment]][-b [branch]][-m][-i [im-user]]
+```
 
-Options:
+#### Options:
   * *-h*   Help
   * *-e*   Target rails environment [development, production]
   * *-b*   Git remote branch to deploy [master, cool_feature]
